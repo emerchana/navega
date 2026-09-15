@@ -12,9 +12,7 @@
       --texto: #333;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -42,8 +40,9 @@
     }
 
     .escudo {
-      width: 70px;
-      height: auto;
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
       background: white;
       border-radius: 50%;
       padding: 4px;
@@ -53,7 +52,6 @@
     header h1 { margin: 0; font-size: 1.8rem; }
     header p { margin: 5px 0 0 0; opacity: 0.9; }
 
-    /* Barra de navegación rápida */
     nav {
       position: sticky;
       top: 0;
@@ -74,12 +72,9 @@
       border-radius: 20px;
       background-color: rgba(255, 255, 255, 0.15);
       font-size: 0.9rem;
-      transition: background-color 0.2s;
     }
 
-    nav a:hover {
-      background-color: rgba(255, 255, 255, 0.35);
-    }
+    nav a:hover { background-color: rgba(255, 255, 255, 0.35); }
 
     .container {
       max-width: 1000px;
@@ -94,6 +89,7 @@
       margin-bottom: 25px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       scroll-margin-top: 60px;
+      overflow-x: auto;
     }
 
     h2 {
@@ -103,18 +99,35 @@
       padding-bottom: 8px;
     }
 
-    .iframe-container {
-      width: 100%;
-      height: 550px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      overflow: hidden;
+    .cargando {
+      padding: 20px;
+      text-align: center;
+      color: #666;
+      font-style: italic;
     }
 
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
+    .btn-enlace {
+      display: inline-block;
+      background-color: var(--rojo-navega);
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    /* Formato para tablas inyectadas */
+    table {
+      width: 100% !important;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    tr:has(td:contains("Navega")), 
+    tr:has(td:contains("NAVEGA")) {
+      background-color: #ffebee !important;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -130,7 +143,6 @@
     </div>
   </header>
 
-  <!-- Accesos Rápidos -->
   <nav>
     <a href="#clasificacion">Clasificación</a>
     <a href="#resultados">Resultados</a>
@@ -139,31 +151,75 @@
 
   <div class="container">
 
-    <!-- CLASIFICACIÓN -->
     <div class="card" id="clasificacion">
       <h2>Clasificación General</h2>
-      <div class="iframe-container">
-        <iframe src="https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codjornada=1"></iframe>
-      </div>
+      <div id="content-clasificacion" class="cargando">Cargando clasificación...</div>
     </div>
 
-    <!-- RESULTADOS -->
     <div class="card" id="resultados">
       <h2>Resultados y Jornadas</h2>
-      <div class="iframe-container">
-        <iframe src="https://www.rfcylf.es/pnfg/NPcd/NFG_CmpJornada?cod_primaria=1000120&CodTemporada=22&CodGrupo=24219165&CodCompeticion=24219160&CodJornada=1"></iframe>
-      </div>
+      <div id="content-resultados" class="cargando">Cargando resultados...</div>
     </div>
 
-    <!-- CALENDARIO -->
     <div class="card" id="calendario">
       <h2>Calendario Completo</h2>
-      <div class="iframe-container">
-        <iframe src="https://www.rfcylf.es/pnfg/NPcd/NFG_VisCalendario_Vis?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codtemporada=22&CodJornada=1&CDetalle=1"></iframe>
-      </div>
+      <div id="content-calendario" class="cargando">Cargando calendario...</div>
     </div>
 
   </div>
+
+  <script>
+    const PROXY = 'https://corsproxy.io/?';
+
+    const URLS = {
+      clasificacion: 'https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codjornada=1',
+      resultados: 'https://www.rfcylf.es/pnfg/NPcd/NFG_CmpJornada?cod_primaria=1000120&CodTemporada=22&CodGrupo=24219165&CodCompeticion=24219160&CodJornada=1',
+      calendario: 'https://www.rfcylf.es/pnfg/NPcd/NFG_VisCalendario_Vis?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codtemporada=22&CodJornada=1&CDetalle=1'
+    };
+
+    async function cargarSeccion(targetId, targetUrl) {
+      const container = document.getElementById(targetId);
+      try {
+        const response = await fetch(PROXY + encodeURIComponent(targetUrl));
+        if (!response.ok) throw new Error('Error al conectar con la RFCYLF');
+        
+        const htmlText = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlText, 'text/html');
+
+        // Extraer las tablas principales de la página devuelta
+        const tablas = doc.querySelectorAll('table');
+
+        if (tablas.length > 0) {
+          container.innerHTML = '';
+          tablas.forEach(tabla => {
+            // Eliminar enlaces para evitar saltos raros a la web original
+            tabla.querySelectorAll('a').forEach(a => {
+              a.removeAttribute('href');
+              a.style.color = 'inherit';
+              a.style.textDecoration = 'none';
+            });
+            container.appendChild(tabla);
+          });
+        } else {
+          throw new Error('No se encontraron tablas de datos.');
+        }
+
+      } catch (error) {
+        console.error(error);
+        container.innerHTML = `
+          <p>No se pudo incrustar el contenido directamente.</p>
+          <a href="${targetUrl}" target="_blank" class="btn-enlace">Abrir en la web de la RFCYLF</a>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarSeccion('content-clasificacion', URLS.clasificacion);
+      cargarSeccion('content-resultados', URLS.resultados);
+      cargarSeccion('content-calendario', URLS.calendario);
+    });
+  </script>
 
 </body>
 </html>
