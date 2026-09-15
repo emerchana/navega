@@ -7,8 +7,13 @@
   <style>
     :root {
       --rojo-navega: #d32f2f;
+      --rojo-oscuro: #9a0007;
       --fondo: #f4f6f8;
       --texto: #333;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
@@ -23,12 +28,58 @@
       background-color: var(--rojo-navega);
       color: white;
       text-align: center;
-      padding: 1.5rem;
+      padding: 1.5rem 1rem;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .escudo {
+      width: 70px;
+      height: auto;
+      background: white;
+      border-radius: 50%;
+      padding: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
 
     header h1 { margin: 0; font-size: 1.8rem; }
     header p { margin: 5px 0 0 0; opacity: 0.9; }
+
+    /* Barra de navegación rápida */
+    nav {
+      position: sticky;
+      top: 0;
+      background-color: var(--rojo-oscuro);
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background-color: rgba(255, 255, 255, 0.15);
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.35);
+    }
 
     .container {
       max-width: 1000px;
@@ -42,6 +93,7 @@
       padding: 15px;
       margin-bottom: 25px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      scroll-margin-top: 60px;
     }
 
     h2 {
@@ -69,14 +121,26 @@
 <body>
 
   <header>
-    <h1>CD Navega - Categoría Benjamín</h1>
-    <p>Seguimiento Liga Oficial RFCYLF</p>
+    <div class="header-content">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9x3-PuqSSwYS4EIgQr69Xo2bKz1YBLJvGTkNWdVzq9UiftQKYnwUZbgI&s=10" alt="Escudo CD Navega" class="escudo">
+      <div>
+        <h1>CD Navega - Benjamín</h1>
+        <p>Liga Oficial RFCYLF</p>
+      </div>
+    </div>
   </header>
+
+  <!-- Accesos Rápidos -->
+  <nav>
+    <a href="#clasificacion">Clasificación</a>
+    <a href="#resultados">Resultados</a>
+    <a href="#calendario">Calendario</a>
+  </nav>
 
   <div class="container">
 
     <!-- CLASIFICACIÓN -->
-    <div class="card">
+    <div class="card" id="clasificacion">
       <h2>Clasificación General</h2>
       <div class="iframe-container">
         <iframe src="https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codjornada=1"></iframe>
@@ -84,7 +148,7 @@
     </div>
 
     <!-- RESULTADOS -->
-    <div class="card">
+    <div class="card" id="resultados">
       <h2>Resultados y Jornadas</h2>
       <div class="iframe-container">
         <iframe src="https://www.rfcylf.es/pnfg/NPcd/NFG_CmpJornada?cod_primaria=1000120&CodTemporada=22&CodGrupo=24219165&CodCompeticion=24219160&CodJornada=1"></iframe>
@@ -92,7 +156,7 @@
     </div>
 
     <!-- CALENDARIO -->
-    <div class="card">
+    <div class="card" id="calendario">
       <h2>Calendario Completo</h2>
       <div class="iframe-container">
         <iframe src="https://www.rfcylf.es/pnfg/NPcd/NFG_VisCalendario_Vis?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codtemporada=22&CodJornada=1&CDetalle=1"></iframe>
