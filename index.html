@@ -33,7 +33,7 @@
       align-items: center;
       justify-content: center;
       gap: 15px;
-      max-width: 800px;
+      max-width: 1000px;
       margin: 0 auto;
     }
 
@@ -51,45 +51,48 @@
     header p { margin: 5px 0 0 0; opacity: 0.9; }
 
     .container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: 30px auto;
       padding: 0 15px;
     }
 
-    .categoria-seccion {
-      margin-bottom: 40px;
+    /* Estructura principal en dos columnas */
+    .columnas-container {
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .categoria-columna {
+      flex: 1;
+      min-width: 300px;
     }
 
     .categoria-titulo {
       color: var(--rojo-navega);
       border-bottom: 3px solid var(--rojo-navega);
       padding-bottom: 5px;
+      margin-top: 0;
       margin-bottom: 20px;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
+      text-align: center;
     }
 
     .card {
       background: white;
       border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 15px;
+      padding: 15px 20px;
+      margin-bottom: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
     }
 
     .card-info h3 {
-      margin: 0 0 5px 0;
-      color: var(--rojo-navega);
-    }
-
-    .card-info p {
       margin: 0;
-      color: #666;
-      font-size: 0.95rem;
+      color: var(--rojo-navega);
+      font-size: 1.1rem;
     }
 
     .btn-imagen {
@@ -97,7 +100,7 @@
       align-items: center;
       justify-content: center;
       background-color: var(--rojo-navega);
-      padding: 10px;
+      padding: 8px;
       border-radius: 8px;
       transition: transform 0.2s, background-color 0.2s;
     }
@@ -108,8 +111,8 @@
     }
 
     .btn-imagen svg {
-      width: 32px;
-      height: 32px;
+      width: 26px;
+      height: 26px;
       fill: white;
     }
   </style>
@@ -127,101 +130,91 @@
   </header>
 
   <div class="container">
+    <div class="columnas-container">
 
-    <!-- SECCIÓN BENJAMÍN A -->
-    <section class="categoria-seccion">
-      <h2 class="categoria-titulo">Benjamín A - 1ª Provincial</h2>
+      <!-- COLUMNA IZQUIERDA: BENJAMÍN A -->
+      <section class="categoria-columna">
+        <h2 class="categoria-titulo">Benjamín A - 1ª Provincial</h2>
 
-      <div class="card">
-        <div class="card-info">
-          <h3>Clasificación General</h3>
-          <p>Consulta la posición y puntos actualizados del Benjamín A.</p>
+        <div class="card">
+          <div class="card-info">
+            <h3>Clasificación</h3>
+          </div>
+          <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codjornada=1" target="_blank" class="btn-imagen" title="Ver Clasificación">
+            <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V18H8v2h8v-2h-3v-2.1c2.28-.46 4-2.48 4-4.9V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
+          </a>
         </div>
-        <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codjornada=1" target="_blank" class="btn-imagen" title="Ver Clasificación">
-          <!-- Icono Trofeo -->
-          <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V18H8v2h8v-2h-3v-2.1c2.28-.46 4-2.48 4-4.9V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
-        </a>
-      </div>
 
-      <div class="card">
-        <div class="card-info">
-          <h3>Resultados de la Jornada</h3>
-          <p>Revisa los marcadores del último fin de semana.</p>
+        <div class="card">
+          <div class="card-info">
+            <h3>Resultados</h3>
+          </div>
+          <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_CmpJornada?cod_primaria=1000120&CodTemporada=22&CodGrupo=24219165&CodCompeticion=24219160&CodJornada=1" target="_blank" class="btn-imagen" title="Ver Resultados">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.85.14-1.67.39-2.44l3.36 2.52-1.02 3.14 2.92 2.12c.73.42 1.52.66 2.35.66s1.62-.24 2.35-.66l2.92-2.12-1.02-3.14 3.36-2.52c.25.77.39 1.59.39 2.44 0 4.41-3.59 8-8 8z"/></svg>
+          </a>
         </div>
-        <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_CmpJornada?cod_primaria=1000120&CodTemporada=22&CodGrupo=24219165&CodCompeticion=24219160&CodJornada=1" target="_blank" class="btn-imagen" title="Ver Resultados">
-          <!-- Icono Balón -->
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.85.14-1.67.39-2.44l3.36 2.52-1.02 3.14 2.92 2.12c.73.42 1.52.66 2.35.66s1.62-.24 2.35-.66l2.92-2.12-1.02-3.14 3.36-2.52c.25.77.39 1.59.39 2.44 0 4.41-3.59 8-8 8z"/></svg>
-        </a>
-      </div>
 
-      <div class="card">
-        <div class="card-info">
-          <h3>Calendario de Partidos</h3>
-          <p>Fechas, horarios y campos de todas las jornadas.</p>
+        <div class="card">
+          <div class="card-info">
+            <h3>Calendario</h3>
+          </div>
+          <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisCalendario_Vis?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codtemporada=22&CodJornada=1&CDetalle=1" target="_blank" class="btn-imagen" title="Ver Calendario">
+            <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+          </a>
         </div>
-        <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisCalendario_Vis?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codtemporada=22&CodJornada=1&CDetalle=1" target="_blank" class="btn-imagen" title="Ver Calendario">
-          <!-- Icono Calendario -->
-          <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-        </a>
-      </div>
 
-      <div class="card">
-        <div class="card-info">
-          <h3>Tabla Cruzada</h3>
-          <p>Matriz completa de enfrentamientos entre todos los equipos.</p>
+        <div class="card">
+          <div class="card-info">
+            <h3>Tabla</h3>
+          </div>
+          <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisTablaCruzada?cod_primaria=1000120&CodGrupo=24219165" target="_blank" class="btn-imagen" title="Ver Tabla Cruzada">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 4h4V6H4v2zm6 0h4V6h-4v2zm6 0h4V6h-4v2zM4 13h4v-3H4v3zm6 0h4v-3h-4v3zm6 0h4v-3h-4v3zM4 18h4v-3H4v3zm6 0h4v-3h-4v3zm6 0h4v-3h-4v3z"/></svg>
+          </a>
         </div>
-        <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisTablaCruzada?cod_primaria=1000120&CodGrupo=24219165" target="_blank" class="btn-imagen" title="Ver Tabla Cruzada">
-          <!-- Icono Cuadrícula/Tabla -->
-          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 4h4V6H4v2zm6 0h4V6h-4v2zm6 0h4V6h-4v2zM4 13h4v-3H4v3zm6 0h4v-3h-4v3zm6 0h4v-3h-4v3zM4 18h4v-3H4v3zm6 0h4v-3h-4v3zm6 0h4v-3h-4v3z"/></svg>
-        </a>
-      </div>
-    </section>
+      </section>
 
-    <!-- SECCIÓN PREBENJAMÍN A -->
-    <section class="categoria-seccion">
-      <h2 class="categoria-titulo">Prebenjamín A - 1ª Provincial</h2>
+      <!-- COLUMNA DERECHA: PREBENJAMÍN A -->
+      <section class="categoria-columna">
+        <h2 class="categoria-titulo">Prebenjamín A - 1ª Provincial</h2>
 
-      <div class="card">
-        <div class="card-info">
-          <h3>Clasificación General</h3>
-          <p>Consulta la posición y puntos actualizados del Prebenjamín A.</p>
+        <div class="card">
+          <div class="card-info">
+            <h3>Clasificación</h3>
+          </div>
+          <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219204&codcompeticion=24219200&codjornada=1" target="_blank" class="btn-imagen" title="Ver Clasificación">
+            <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V18H8v2h8v-2h-3v-2.1c2.28-.46 4-2.48 4-4.9V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
+          </a>
         </div>
-        <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219204&codcompeticion=24219200&codjornada=1" target="_blank" class="btn-imagen" title="Ver Clasificación">
-          <svg viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V18H8v2h8v-2h-3v-2.1c2.28-.46 4-2.48 4-4.9V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
-        </a>
-      </div>
 
-      <div class="card">
-        <div class="card-info">
-          <h3>Resultados de la Jornada</h3>
-          <p>Revisa los marcadores del último fin de semana.</p>
+        <div class="card">
+          <div class="card-info">
+            <h3>Resultados</h3>
+          </div>
+          <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_CmpJornada?cod_primaria=1000120&CodTemporada=22&CodGrupo=24219204&CodCompeticion=24219200&CodJornada=1" target="_blank" class="btn-imagen" title="Ver Resultados">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.85.14-1.67.39-2.44l3.36 2.52-1.02 3.14 2.92 2.12c.73.42 1.52.66 2.35.66s1.62-.24 2.35-.66l2.92-2.12-1.02-3.14 3.36-2.52c.25.77.39 1.59.39 2.44 0 4.41-3.59 8-8 8z"/></svg>
+          </a>
         </div>
-        <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_CmpJornada?cod_primaria=1000120&CodTemporada=22&CodGrupo=24219204&CodCompeticion=24219200&CodJornada=1" target="_blank" class="btn-imagen" title="Ver Resultados">
-          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8 0-.85.14-1.67.39-2.44l3.36 2.52-1.02 3.14 2.92 2.12c.73.42 1.52.66 2.35.66s1.62-.24 2.35-.66l2.92-2.12-1.02-3.14 3.36-2.52c.25.77.39 1.59.39 2.44 0 4.41-3.59 8-8 8z"/></svg>
-        </a>
-      </div>
 
-      <div class="card">
-        <div class="card-info">
-          <h3>Calendario de Partidos</h3>
-          <p>Fechas, horarios y campos de todas las jornadas.</p>
+        <div class="card">
+          <div class="card-info">
+            <h3>Calendario</h3>
+          </div>
+          <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisCalendario_Vis?cod_primaria=1000120&codgrupo=24219204&codcompeticion=24219200&codtemporada=22&CodJornada=1&CDetalle=1" target="_blank" class="btn-imagen" title="Ver Calendario">
+            <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+          </a>
         </div>
-        <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisCalendario_Vis?cod_primaria=1000120&codgrupo=24219204&codcompeticion=24219200&codtemporada=22&CodJornada=1&CDetalle=1" target="_blank" class="btn-imagen" title="Ver Calendario">
-          <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
-        </a>
-      </div>
 
-      <div class="card">
-        <div class="card-info">
-          <h3>Tabla Cruzada</h3>
-          <p>Matriz completa de enfrentamientos entre todos los equipos.</p>
+        <div class="card">
+          <div class="card-info">
+            <h3>Tabla</h3>
+          </div>
+          <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisTablaCruzada?cod_primaria=1000120&CodGrupo=24219204" target="_blank" class="btn-imagen" title="Ver Tabla Cruzada">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 4h4V6H4v2zm6 0h4V6h-4v2zm6 0h4V6h-4v2zM4 13h4v-3H4v3zm6 0h4v-3h-4v3zm6 0h4v-3h-4v3zM4 18h4v-3H4v3zm6 0h4v-3h-4v3zm6 0h4v-3h-4v3z"/></svg>
+          </a>
         </div>
-        <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisTablaCruzada?cod_primaria=1000120&CodGrupo=24219204" target="_blank" class="btn-imagen" title="Ver Tabla Cruzada">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 4h4V6H4v2zm6 0h4V6h-4v2zm6 0h4V6h-4v2zM4 13h4v-3H4v3zm6 0h4v-3h-4v3zm6 0h4v-3h-4v3zM4 18h4v-3H4v3zm6 0h4v-3h-4v3zm6 0h4v-3h-4v3z"/></svg>
-        </a>
-      </div>
-    </section>
+      </section>
 
+    </div>
   </div>
 
 </body>
