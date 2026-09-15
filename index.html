@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CD Navega - Benjamín</title>
+  <style>
+    :root {
+      --rojo-navega: #d32f2f;
+      --fondo: #f4f6f8;
+      --texto: #333;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--fondo);
+      color: var(--texto);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: var(--rojo-navega);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    header h1 { margin: 0; font-size: 1.8rem; }
+    header p { margin: 5px 0 0 0; opacity: 0.9; }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: var(--rojo-navega);
+      border-bottom: 2px solid var(--fondo);
+      padding-bottom: 8px;
+    }
+
+    .selector-jornada {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    select {
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      text-align: center;
+      padding: 10px 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      color: #555;
+    }
+
+    .pos { font-weight: bold; }
+    .equipo-col { text-align: left; }
+    .destacado {
+      background-color: #ffebee;
+      font-weight: bold;
+    }
+
+    .partido {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .partido:last-child { border-bottom: none; }
+    .equipo { flex: 1; }
+    .equipo.local { text-align: right; }
+    .equipo.visita { text-align: left; }
+    .resultado {
+      background: #333;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin: 0 15px;
+      min-width: 40px;
+      text-align: center;
+    }
+
+    .cargando {
+      color: #777;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CD Navega - Categoría Benjamín</h1>
+    <p>Seguimiento Liga Oficial RFCYLF</p>
+  </header>
+
+  <div class="container">
+
+    <!-- PRÓXIMOS PARTIDOS / CALENDARIO -->
+    <div class="card">
+      <h2>Próximos Partidos (Calendario)</h2>
+      <div id="contenedor-calendario" class="cargando">Cargando calendario desde la RFCYLF...</div>
+    </div>
+
+    <!-- RESULTADOS POR JORNADA -->
+    <div class="card">
+      <h2>Resultados de la Liga</h2>
+      <div class="selector-jornada">
+        <label for="select-jornada"><strong>Seleccionar Jornada:</strong></label>
+        <select id="select-jornada" onchange="cargarResultados(this.value)">
+          <option value="1">Jornada 1</option>
+          <option value="2">Jornada 2</option>
+          <option value="3">Jornada 3</option>
+          <option value="4">Jornada 4</option>
+          <option value="5">Jornada 5</option>
+        </select>
+      </div>
+      <div id="contenedor-resultados" class="cargando">Cargando resultados...</div>
+    </div>
+
+    <!-- CLASIFICACIÓN -->
+    <div class="card">
+      <h2>Clasificación General</h2>
+      <div id="contenedor-clasificacion" class="cargando">Cargando clasificación...</div>
+    </div>
+
+  </div>
+
+  <script>
+    const PROXY = 'https://corsproxy.io/?';
+
+    // 1. Cargar Clasificación
+    async function cargarClasificacion() {
+      const url = 'https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codjornada=1';
+      const contenedor = document.getElementById('contenedor-clasificacion');
+
+      try {
+        const res = await fetch(PROXY + encodeURIComponent(url));
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+
+        const tablaOriginal = doc.querySelector('table');
+        if (!tablaOriginal) {
+          contenedor.innerHTML = 'No se pudo obtener la tabla de clasificación.';
+          return;
+        }
+
+        // Marcar filas del CD Navega para destacar
+        const filas = tablaOriginal.querySelectorAll('tr');
+        filas.forEach(row => {
+          if (row.innerText.toUpperCase().includes('NAVEGA')) {
+            row.classList.add('destacado');
+          }
+        });
+
+        contenedor.innerHTML = '';
+        contenedor.appendChild(tablaOriginal);
+      } catch (err) {
+        contenedor.innerHTML = 'Error al cargar la clasificación.';
+        console.error(err);
+      }
+    }
+
+    // 2. Cargar Resultados por Jornada
+    async function cargarResultados(jornada = 1) {
+      const url = `https://www.rfcylf.es/pnfg/NPcd/NFG_CmpJornada?cod_primaria=1000120&CodTemporada=22&CodGrupo=24219165&CodCompeticion=24219160&CodJornada=${jornada}`;
+      const contenedor = document.getElementById('contenedor-resultados');
+      contenedor.innerHTML = '<span class="cargando">Cargando jornada...</span>';
+
+      try {
+        const res = await fetch(PROXY + encodeURIComponent(url));
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+
+        const tablas = doc.querySelectorAll('table');
+        if (tablas.length === 0) {
+          contenedor.innerHTML = 'No hay datos de resultados para esta jornada.';
+          return;
+        }
+
+        contenedor.innerHTML = '';
+        // Insertar tabla de resultados limpia
+        tablas.forEach(tabla => {
+          tabla.querySelectorAll('tr').forEach(row => {
+            if (row.innerText.toUpperCase().includes('NAVEGA')) {
+              row.classList.add('destacado');
+            }
+          });
+          contenedor.appendChild(tabla);
+        });
+
+      } catch (err) {
+        contenedor.innerHTML = 'Error al cargar los resultados.';
+        console.error(err);
+      }
+    }
+
+    // 3. Cargar Calendario / Próximos Partidos
+    async function cargarCalendario() {
+      const url = 'https://www.rfcylf.es/pnfg/NPcd/NFG_VisCalendario_Vis?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codtemporada=22&CodJornada=1&CDetalle=1';
+      const contenedor = document.getElementById('contenedor-calendario');
+
+      try {
+        const res = await fetch(PROXY + encodeURIComponent(url));
+        const html = await res.text();
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+
+        const contenido = doc.querySelector('.contenido') || doc.querySelector('table');
+        if (!contenido) {
+          contenedor.innerHTML = 'No se pudo cargar el calendario.';
+          return;
+        }
+
+        contenedor.innerHTML = '';
+        contenedor.appendChild(contenido);
+      } catch (err) {
+        contenedor.innerHTML = 'Error al cargar el calendario.';
+        console.error(err);
+      }
+    }
+
+    // Cargar todos los datos al iniciar la página
+    document.addEventListener('DOMContentLoaded', () => {
+      cargarClasificacion();
+      cargarResultados(1);
+      cargarCalendario();
+    });
+  </script>
+</body>
+</html>
