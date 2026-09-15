@@ -12,8 +12,6 @@
       --texto: #333;
     }
 
-    html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--fondo);
@@ -40,8 +38,8 @@
     }
 
     .escudo {
-      width: 60px;
-      height: 60px;
+      width: 65px;
+      height: 65px;
       object-fit: contain;
       background: white;
       border-radius: 50%;
@@ -52,94 +50,48 @@
     header h1 { margin: 0; font-size: 1.8rem; }
     header p { margin: 5px 0 0 0; opacity: 0.9; }
 
-    nav {
-      position: sticky;
-      top: 0;
-      background-color: var(--rojo-oscuro);
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      padding: 10px;
-      z-index: 1000;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 6px 14px;
-      border-radius: 20px;
-      background-color: rgba(255, 255, 255, 0.15);
-      font-size: 0.9rem;
-    }
-
-    nav a:hover { background-color: rgba(255, 255, 255, 0.35); }
-
     .container {
-      max-width: 1000px;
-      margin: 20px auto;
+      max-width: 800px;
+      margin: 30px auto;
       padding: 0 15px;
     }
 
     .card {
       background: white;
       border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 25px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      scroll-margin-top: 60px;
-      overflow-x: auto;
-    }
-
-    h2 {
-      margin-top: 0;
-      color: var(--rojo-navega);
-      border-bottom: 2px solid var(--fondo);
-      padding-bottom: 8px;
-    }
-
-    .cargando {
       padding: 20px;
-      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .card-info h2 {
+      margin: 0 0 5px 0;
+      color: var(--rojo-navega);
+    }
+
+    .card-info p {
+      margin: 0;
       color: #666;
-      font-style: italic;
+      font-size: 0.95rem;
     }
 
     .btn-enlace {
-      display: inline-block;
       background-color: var(--rojo-navega);
       color: white;
-      padding: 8px 16px;
+      padding: 12px 20px;
       text-decoration: none;
-      border-radius: 4px;
+      border-radius: 6px;
       font-weight: bold;
-      margin-top: 10px;
+      transition: background-color 0.2s;
     }
 
-    /* Estilos para las tablas importadas */
-    table {
-      width: 100% !important;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th, td {
-      padding: 8px;
-      border: 1px solid #eee;
-      text-align: center;
-    }
-
-    th {
-      background-color: #f8f9fa;
-    }
-
-    /* Resaltar al CD Navega */
-    tr:has(td:contains("Navega")), 
-    tr:has(td:contains("NAVEGA")),
-    tr.destacado {
-      background-color: #ffebee !important;
-      font-weight: bold;
+    .btn-enlace:hover {
+      background-color: var(--rojo-oscuro);
     }
   </style>
 </head>
@@ -155,91 +107,33 @@
     </div>
   </header>
 
-  <nav>
-    <a href="#clasificacion">Clasificación</a>
-    <a href="#resultados">Resultados</a>
-    <a href="#calendario">Calendario</a>
-  </nav>
-
   <div class="container">
 
-    <div class="card" id="clasificacion">
-      <h2>Clasificación General</h2>
-      <div id="content-clasificacion" class="cargando">Cargando clasificación...</div>
+    <div class="card">
+      <div class="card-info">
+        <h2>Clasificación General</h2>
+        <p>Consulta la posición y puntos actualizados del CD Navega.</p>
+      </div>
+      <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codjornada=1" target="_blank" class="btn-enlace">Ver Clasificación</a>
     </div>
 
-    <div class="card" id="resultados">
-      <h2>Resultados y Jornadas</h2>
-      <div id="content-resultados" class="cargando">Cargando resultados...</div>
+    <div class="card">
+      <div class="card-info">
+        <h2>Resultados de la Jornada</h2>
+        <p>Revisa los marcadores del último fin de semana.</p>
+      </div>
+      <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_CmpJornada?cod_primaria=1000120&CodTemporada=22&CodGrupo=24219165&CodCompeticion=24219160&CodJornada=1" target="_blank" class="btn-enlace">Ver Resultados</a>
     </div>
 
-    <div class="card" id="calendario">
-      <h2>Calendario Completo</h2>
-      <div id="content-calendario" class="cargando">Cargando calendario...</div>
+    <div class="card">
+      <div class="card-info">
+        <h2>Calendario de Partidos</h2>
+        <p>Fechas, horarios y campos de todas las jornadas de la liga.</p>
+      </div>
+      <a href="https://www.rfcylf.es/pnfg/NPcd/NFG_VisCalendario_Vis?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codtemporada=22&CodJornada=1&CDetalle=1" target="_blank" class="btn-enlace">Ver Calendario</a>
     </div>
 
   </div>
-
-  <script>
-    // Utilizar CodeTabs como proxy CORS de alto rendimiento
-    const PROXY = 'https://api.codetabs.com/v1/proxy?quest=';
-
-    const URLS = {
-      clasificacion: 'https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codjornada=1',
-      resultados: 'https://www.rfcylf.es/pnfg/NPcd/NFG_CmpJornada?cod_primaria=1000120&CodTemporada=22&CodGrupo=24219165&CodCompeticion=24219160&CodJornada=1',
-      calendario: 'https://www.rfcylf.es/pnfg/NPcd/NFG_VisCalendario_Vis?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codtemporada=22&CodJornada=1&CDetalle=1'
-    };
-
-    async function cargarSeccion(targetId, targetUrl) {
-      const container = document.getElementById(targetId);
-      try {
-        const response = await fetch(PROXY + encodeURIComponent(targetUrl));
-        if (!response.ok) throw new Error('Error al conectar');
-        
-        const htmlText = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlText, 'text/html');
-
-        const tablas = doc.querySelectorAll('table');
-
-        if (tablas.length > 0) {
-          container.innerHTML = '';
-          tablas.forEach(tabla => {
-            // Limpiar enlaces para evitar desvíos fuera de la página
-            tabla.querySelectorAll('a').forEach(a => {
-              a.removeAttribute('href');
-              a.style.color = 'inherit';
-              a.style.textDecoration = 'none';
-            });
-
-            // Resaltar filas del CD Navega
-            tabla.querySelectorAll('tr').forEach(tr => {
-              if (tr.innerText.toUpperCase().includes('NAVEGA')) {
-                tr.classList.add('destacado');
-              }
-            });
-
-            container.appendChild(tabla);
-          });
-        } else {
-          throw new Error('Sin tablas');
-        }
-
-      } catch (error) {
-        console.error(error);
-        container.innerHTML = `
-          <p>No se pudieron descargar los datos automáticamente.</p>
-          <a href="${targetUrl}" target="_blank" class="btn-enlace">Ver en la web oficial RFCYLF</a>
-        `;
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      cargarSeccion('content-clasificacion', URLS.clasificacion);
-      cargarSeccion('content-resultados', URLS.resultados);
-      cargarSeccion('content-calendario', URLS.calendario);
-    });
-  </script>
 
 </body>
 </html>
