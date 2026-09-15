@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CD Navega - Benjamín</title>
+  <style>
+    :root {
+      --rojo-navega: #d32f2f;
+      --verde-fondo: #f4f6f8;
+      --texto: #333;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--verde-fondo);
+      color: var(--texto);
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: var(--rojo-navega);
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    header h1 { margin: 0; font-size: 1.8rem; }
+    header p { margin: 5px 0 0 0; opacity: 0.9; }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: var(--rojo-navega);
+      border-bottom: 2px solid var(--verde-fondo);
+      padding-bottom: 8px;
+    }
+
+    /* Estilos de la tabla de clasificación */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      text-align: center;
+      padding: 10px 8px;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      color: #555;
+    }
+
+    .pos { font-weight: bold; }
+    .equipo-col { text-align: left; }
+    .destacado {
+      background-color: #ffebee;
+      font-weight: bold;
+    }
+
+    /* Estilos para partidos */
+    .partido {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .partido:last-child { border-bottom: none; }
+    .equipo { flex: 1; }
+    .equipo.local { text-align: right; }
+    .equipo.visita { text-align: left; }
+    .resultado {
+      background: #333;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin: 0 15px;
+    }
+
+    .fecha {
+      font-size: 0.85rem;
+      color: #666;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CD Navega - Categoría Benjamín</h1>
+    <p>Seguimiento Liga Local de Salamanca</p>
+  </header>
+
+  <div class="container">
+    
+    <!-- Próximo Partido -->
+    <div class="card">
+      <h2>Próximo Partido</h2>
+      <div class="fecha">Sábado - 10:00 h | Campo: Vicente del Bosque</div>
+      <div class="partido">
+        <span class="equipo local"><strong>CD Navega</strong></span>
+        <span class="resultado">VS</span>
+        <span class="equipo visita">Unionistas C.F.</span>
+      </div>
+    </div>
+
+    <!-- ÚLTIMOS RESULTADOS -->
+    <div class="card">
+      <h2>Últimos Resultados</h2>
+      <div class="partido">
+        <span class="equipo local">U.D. Santa Marta</span>
+        <span class="resultado">2 - 3</span>
+        <span class="equipo visita"><strong>CD Navega</strong></span>
+      </div>
+      <div class="partido">
+        <span class="equipo local"><strong>CD Navega</strong></span>
+        <span class="resultado">4 - 1</span>
+        <span class="equipo visita">Salamanca C.F.</span>
+      </div>
+    </div>
+
+    <!-- CLASIFICACIÓN -->
+    <div class="card">
+      <h2>Clasificación</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Pos</th>
+            <th class="equipo-col">Equipo</th>
+            <th>PJ</th>
+            <th>PG</th>
+            <th>PE</th>
+            <th>PP</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-clasificacion">
+          <!-- Se carga dinámicamente con JS -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    // Datos de la clasificación
+    const equipos = [
+      { pos: 1, nombre: "CD Navega", pj: 5, pg: 4, pe: 1, pp: 0, pts: 13, esNavega: true },
+      { pos: 2, nombre: "Unionistas C.F.", pj: 5, pg: 4, pe: 0, pp: 1, pts: 12, esNavega: false },
+      { pos: 3, nombre: "U.D. Santa Marta", pj: 5, pg: 3, pe: 1, pp: 1, pts: 10, esNavega: false },
+      { pos: 4, nombre: "Salamanca C.F.", pj: 5, pg: 2, pe: 0, pp: 3, pts: 6, esNavega: false },
+      { pos: 5, nombre: "C.D. Carbajosa", pj: 5, pg: 0, pe: 0, pp: 5, pts: 0, esNavega: false }
+    ];
+
+    function cargarClasificacion() {
+      const tbody = document.getElementById("tabla-clasificacion");
+      tbody.innerHTML = "";
+
+      equipos.forEach(eq => {
+        const tr = document.createElement("tr");
+        if (eq.esNavega) tr.classList.add("destacado");
+
+        tr.innerHTML = `
+          <td class="pos">${eq.pos}</td>
+          <td class="equipo-col">${eq.nombre}</td>
+          <td>${eq.pj}</td>
+          <td>${eq.pg}</td>
+          <td>${eq.pe}</td>
+          <td>${eq.pp}</td>
+          <td><strong>${eq.pts}</strong></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // Inicializar tabla al cargar
+    document.addEventListener("DOMContentLoaded", cargarClasificacion);
+  </script>
+
+</body>
+</html>
