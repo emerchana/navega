@@ -117,15 +117,27 @@
       margin-top: 10px;
     }
 
-    /* Formato para tablas inyectadas */
+    /* Estilos para las tablas importadas */
     table {
       width: 100% !important;
       border-collapse: collapse;
       margin-top: 10px;
     }
 
+    th, td {
+      padding: 8px;
+      border: 1px solid #eee;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f8f9fa;
+    }
+
+    /* Resaltar al CD Navega */
     tr:has(td:contains("Navega")), 
-    tr:has(td:contains("NAVEGA")) {
+    tr:has(td:contains("NAVEGA")),
+    tr.destacado {
       background-color: #ffebee !important;
       font-weight: bold;
     }
@@ -169,7 +181,8 @@
   </div>
 
   <script>
-    const PROXY = 'https://corsproxy.io/?';
+    // Utilizar CodeTabs como proxy CORS de alto rendimiento
+    const PROXY = 'https://api.codetabs.com/v1/proxy?quest=';
 
     const URLS = {
       clasificacion: 'https://www.rfcylf.es/pnfg/NPcd/NFG_VisClasificacion?cod_primaria=1000120&codgrupo=24219165&codcompeticion=24219160&codjornada=1',
@@ -181,35 +194,42 @@
       const container = document.getElementById(targetId);
       try {
         const response = await fetch(PROXY + encodeURIComponent(targetUrl));
-        if (!response.ok) throw new Error('Error al conectar con la RFCYLF');
+        if (!response.ok) throw new Error('Error al conectar');
         
         const htmlText = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(htmlText, 'text/html');
 
-        // Extraer las tablas principales de la página devuelta
         const tablas = doc.querySelectorAll('table');
 
         if (tablas.length > 0) {
           container.innerHTML = '';
           tablas.forEach(tabla => {
-            // Eliminar enlaces para evitar saltos raros a la web original
+            // Limpiar enlaces para evitar desvíos fuera de la página
             tabla.querySelectorAll('a').forEach(a => {
               a.removeAttribute('href');
               a.style.color = 'inherit';
               a.style.textDecoration = 'none';
             });
+
+            // Resaltar filas del CD Navega
+            tabla.querySelectorAll('tr').forEach(tr => {
+              if (tr.innerText.toUpperCase().includes('NAVEGA')) {
+                tr.classList.add('destacado');
+              }
+            });
+
             container.appendChild(tabla);
           });
         } else {
-          throw new Error('No se encontraron tablas de datos.');
+          throw new Error('Sin tablas');
         }
 
       } catch (error) {
         console.error(error);
         container.innerHTML = `
-          <p>No se pudo incrustar el contenido directamente.</p>
-          <a href="${targetUrl}" target="_blank" class="btn-enlace">Abrir en la web de la RFCYLF</a>
+          <p>No se pudieron descargar los datos automáticamente.</p>
+          <a href="${targetUrl}" target="_blank" class="btn-enlace">Ver en la web oficial RFCYLF</a>
         `;
       }
     }
